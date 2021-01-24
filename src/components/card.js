@@ -1,4 +1,48 @@
 const Card = (article) => {
+  const imgContainer = document.createElement('div');
+  const authorPic = document.createElement('img');
+  const authorName = document.createElement('span')
+  const cardContainer = document.createElement('div');
+  const headline = document.createElement('div');
+  const author = document.createElement('div');
+  
+
+  cardContainer.classList.add('card');
+  author.classList.add('author');
+  headline.classList.add('headline');
+  imgContainer.classList.add('img-container');
+  authorPic.src = article.authorPhoto;
+
+
+  headline.textContent = article.headline;
+  authorName.textContent = `By ${article.authorName}`;
+
+  cardContainer.append(headline);
+  imgContainer.append(authorPic);
+  cardContainer.append(author);
+  author.append(imgContainer);
+  author.append(authorName);
+
+  cardContainer.addEventListener('click', (e) => {
+    console.log(article.headline);
+  });
+
+  return cardContainer;
+};
+
+const cardAppender = (selector) => {
+  axios.get(`https://lambda-times-api.herokuapp.com/articles`)
+    .then(res => {
+      const combinedArticles = [...res.data.articles.bootstrap, ...res.data.articles.javascript, ...res.data.articles.jquery, ...res.data.articles.node, ...res.data.articles.technology];
+      combinedArticles.forEach((article) => {
+        document.querySelector(selector).append(Card(article));
+      })
+    })
+}
+
+export { Card, cardAppender }
+
+
   // TASK 5
   // ---------------------
   // Implement this function, which should return the markup you see below.
@@ -17,9 +61,9 @@ const Card = (article) => {
   //   </div>
   // </div>
   //
-}
 
-const cardAppender = (selector) => {
+
+
   // TASK 6
   // ---------------------
   // Implement this function that takes a css selector as its only argument.
@@ -28,6 +72,4 @@ const cardAppender = (selector) => {
   // Create a card from each and every article object in the response, using the Card component.
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
-}
 
-export { Card, cardAppender }
